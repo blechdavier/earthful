@@ -7,7 +7,7 @@
 <header>
 	<nav class="flex content-between h-12 justify-between items-center p-3">
 		<a href="/" aria-current={$page.url.pathname === '/' ? 'page' : undefined}
-			><h1 class="font-black text-2xl">Cleaner World</h1></a
+			><h1 class="font-black text-2xl">Earthful</h1></a
 		>
 		<ul class="flex">
 			<li class="ml-3" aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
