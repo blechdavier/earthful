@@ -1,7 +1,8 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
-	import { UserIcon, PlusSquareIcon, InfoIcon } from 'svelte-feather-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { LightningBolt } from '@steeze-ui/heroicons';
 </script>
 
 <header>
@@ -11,13 +12,15 @@
 		>
 		<ul class="flex">
 			<li class="ml-3" aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about"><InfoIcon /></a>
+				<a href="/about">
+					<Icon src={LightningBolt} theme="solid" class="text-red-500" />
+				</a>
 			</li>
 			<li class="ml-3" aria-current={$page.url.pathname === '/plus' ? 'page' : undefined}>
-				<a href="/plus"><PlusSquareIcon /></a>
+				<a href="/plus"><Icon src={LightningBolt} theme="solid" class="bg-red-500" /></a>
 			</li>
 			<li class="ml-3" aria-current={$page.url.pathname === '/profile' ? 'page' : undefined}>
-				<a href="/profile"><UserIcon /></a>
+				<a href="/profile"><Icon src={LightningBolt} theme="solid" class="color-gray-900" /></a>
 			</li>
 		</ul>
 	</nav>
