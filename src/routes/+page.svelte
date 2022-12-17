@@ -4,7 +4,7 @@
 
 	import { onMount } from 'svelte';
 
-	export let map;
+	export let map
 	let L;
 	let position: [number, number] = [0, 0];
 	let zoom = 16;
