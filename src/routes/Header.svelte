@@ -4,7 +4,7 @@
 	import { InformationCircle, PlusCircle, UserCircle } from '@steeze-ui/heroicons';
 	//import user store
 	import { userStore } from './stores';
-	import { User } from './user';
+	import type { User } from './user';
 	let user: User | null;
 	userStore.subscribe(x => user = x);
 	// userStore.set(new User("numericly"));
@@ -14,7 +14,7 @@
 <header>
 	<nav class="flex content-between h-12 justify-between items-center p-3">
 		<a href="/" aria-current={$page.url.pathname === '/' ? 'page' : undefined}
-			><h1 class="font-black text-2xl">Earthful</h1></a
+			><h1 class="font-black text-2xl">Earthful<span class="text-green-700 dark:text-green-400">.app</span></h1></a
 		>
 		<ul class="flex">
 			<li class="ml-3" aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
@@ -22,7 +22,7 @@
 					<Icon src={InformationCircle} size="2rem" />
 				</a>
 			</li>
-			<li class="ml-3" aria-current={$page.url.pathname === '/plus' ? 'page' : undefined}>
+			<li class="ml-3 md:max-sm:hidden" aria-current={$page.url.pathname === '/plus' ? 'page' : undefined}>
 				<a href="/plus"><Icon src={PlusCircle} size="2rem" /></a>
 			</li>
 			<li class="ml-3" aria-current={$page.url.pathname === '/profile' ? 'page' : undefined}>
