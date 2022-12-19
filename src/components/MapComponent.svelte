@@ -1,5 +1,4 @@
 <script lang="ts">
-    
 	import type { LayerGroup, Map } from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
 
@@ -57,27 +56,25 @@
 		L = l.default;
 
 		let map: Map | LayerGroup<any> | undefined = undefined;
-		
-		map = L.map('map', { zoomControl: false }).setView(position, zoom);
+
+		map = L.map('map', {
+			zoomControl: false,
+			wheelDebounceTime: 0,
+			wheelPxPerZoomLevel: 30
+		}).setView(position, zoom);
 
 		new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
 
-		let lightMap = L.tileLayer(
-			'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
-			{
-				maxZoom: 20,
-				attribution:
-					'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-			}
-		);
-		let darkMap = L.tileLayer(
-			'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
-			{
-				maxZoom: 20,
-				attribution:
-					'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-			}
-		);
+		let lightMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+			maxZoom: 20,
+			attribution:
+				'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+		});
+		let darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
+			maxZoom: 20,
+			attribution:
+				'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+		});
 		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 			// dark mode
 			darkMap.addTo(map);
@@ -85,14 +82,6 @@
 			// light mode
 			lightMap.addTo(map);
 		}
-
-		// let marker = L.marker([51.5, -0.09])
-		// bindPopup(marker, (container) => {
-		// 	let c = new Button({
-		// 		target: container,
-		// 	});
-		// 	return c;
-		// });
 
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
 			if (!map) return;
@@ -107,3 +96,5 @@
 		});
 	});
 </script>
+
+<div id="map" class="h-full bg-[#c1c9cc] dark:bg-[#222222] flex-grow relative" />

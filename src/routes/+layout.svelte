@@ -4,12 +4,14 @@
 	import './styles.css';
 </script>
 
-<div class="app text-black dark:text-white bg-white dark:bg-black h-screen">
+<div
+	class="app text-black dark:text-white bg-gray-100 dark:bg-black h-full flex flex-col flex-grow"
+>
 	<header>
 		<Header />
 	</header>
 
-	<main>
+	<main class="flex-grow">
 		<slot />
 	</main>
 
