@@ -8,5 +8,5 @@
 	<meta name="description" content="A social platform to save our Earth." />
 </svelte:head>
 
-<MapComponent />
 <PostButton />
+<MapComponent />
