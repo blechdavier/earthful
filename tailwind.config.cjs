@@ -18,7 +18,7 @@ const config = {
 				clouds:
 					"url('/src/assets/images/clouds.webp'), linear-gradient(to bottom, rgb(194, 202, 208) 0%, rgb(164, 174, 182) 87%, rgb(141, 155, 169) 100%)",
 				rocks:
-					"url('/src/assets/images/rock.webp'), linear-gradient(169deg, rgb(0, 0, 0) 40%, rgb(39, 36, 29) 50%, rgb(88, 79, 66) 68%, rgb(0, 0, 0) 82%)"
+					"url('/src/assets/images/rocks.webp'), linear-gradient(173deg, rgb(0, 0, 0) 48%, rgb(59, 60, 64) 67%, rgb(35, 37, 40) 82%)"
 			}
 		}
 	},
