@@ -13,10 +13,10 @@
 	// userStore.set(new User("test_user123"));
 	// userStore.set(null);
 	let usernameValidity:
-		| undefined
-		| true
-		| 'Username must be at least 3 characters'
-		| 'Username must only contain numbers and letters'
+		| undefined // blank  (doesn't show error message)
+		| true // valid (doesn't show error message, but also is used in other logic)
+		| 'Username must be at least 3 characters' // invalid
+		| 'Username must only contain numbers and letters' //...
 		| 'Username must be at most 20 characters'
 		| 'Username is already taken';
 
@@ -39,7 +39,8 @@
 		if (e.currentTarget.value.length > 0) {
 			showBlankFieldMessage = false;
 			blankFieldMessage = undefined;
-			if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(e.currentTarget.value)) {
+			let formEmail = e.currentTarget.value;
+			if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(formEmail)) {
 				emailValidity = 'Email must be a valid email address';
 			} else {
 				emailValidity = true;
@@ -54,11 +55,12 @@
 		if (e.currentTarget.value.length > 0) {
 			showBlankFieldMessage = false;
 			blankFieldMessage = undefined;
-			if (e.currentTarget.value.length < 3) {
+			let formUsername = e.currentTarget.value;
+			if (formUsername.length < 3) {
 				usernameValidity = 'Username must be at least 3 characters';
-			} else if (e.currentTarget.value.length > 20) {
+			} else if (formUsername.length > 20) {
 				usernameValidity = 'Username must be at most 20 characters';
-			} else if (!/^[a-zA-Z0-9]+$/.test(e.currentTarget.value)) {
+			} else if (!/^[a-zA-Z0-9]+$/.test(formUsername)) {
 				usernameValidity = 'Username must only contain numbers and letters';
 			} else {
 				usernameValidity = true;
@@ -74,19 +76,20 @@
 		if (e.currentTarget.value.length > 0) {
 			showBlankFieldMessage = false;
 			blankFieldMessage = undefined;
+			let formPassword = e.currentTarget.value;
 			if (e.currentTarget.value.length < 8) {
 				passwordValidity = 'Password must be at least 8 characters';
-			} else if (e.currentTarget.value.length > 128) {
+			} else if (formPassword.length > 128) {
 				passwordValidity = 'Password must be at most 128 characters';
-			} else if (!/[0-9]/.test(e.currentTarget.value)) {
+			} else if (!/[0-9]/.test(formPassword)) {
 				passwordValidity = 'Password must contain at least one number';
-			} else if (!/[a-z]/.test(e.currentTarget.value)) {
+			} else if (!/[a-z]/.test(formPassword)) {
 				passwordValidity = 'Password must contain at least one lowercase letter';
-			} else if (!/[A-Z]/.test(e.currentTarget.value)) {
+			} else if (!/[A-Z]/.test(formPassword)) {
 				passwordValidity = 'Password must contain at least one uppercase letter';
-			} else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(e.currentTarget.value)) {
+			} else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formPassword)) {
 				passwordValidity = 'Password must contain at least one special character';
-			} else if (!/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/.test(e.currentTarget.value)) {
+			} else if (!/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/.test(formPassword)) {
 				passwordValidity = 'Password can only contain numbers, letters, and special characters';
 			} else {
 				passwordValidity = true;
