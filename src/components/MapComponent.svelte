@@ -7,7 +7,7 @@
 
 	let L;
 	let position: [number, number] = [0, 0];
-	let zoom = 16;
+	let zoom = 2;
 
 	// https://docs.ipdata.co/docs/html5-geolocation-with-ipdata-fallback
 	const geoFindMe = () => {
@@ -29,7 +29,7 @@
 
 	const error = (error: GeolocationPositionError) => {
 		var request = new XMLHttpRequest();
-		request.open('GET', 'http://ipapi.co/json');
+		request.open('GET', 'https://ipapi.co/json');
 		request.onreadystatechange = function () {
 			if (this.readyState === 4) {
 				let data = JSON.parse(this.responseText);
