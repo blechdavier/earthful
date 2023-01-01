@@ -29,7 +29,7 @@
 			class="ml-3 hidden xs:block"
 			aria-current={$page.url.pathname === '/plus' ? 'page' : undefined}
 		>
-			<a href="/plus"><Icon src={PlusCircle} size="2rem" /></a>
+			<a href="/"><Icon src={PlusCircle} size="2rem" /></a>
 		</li>
 		<li class="ml-3" aria-current={$page.url.pathname === '/profile' ? 'page' : undefined}>
 			{#if user !== null}
