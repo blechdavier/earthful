@@ -4,8 +4,8 @@
 	import { User } from '../routes/user';
 	let user: User | null;
 	userStore.subscribe((x) => (user = x));
-	// userStore.set(new User('test_user123'));
-	userStore.set(null);
+	if (Math.random() > 0.5) userStore.set(new User('test_user123'));
+	else userStore.set(null);
 
 	import { onMount } from 'svelte';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -47,7 +47,7 @@
 		<a href="/" class="text-3xl ">Earthful</a>
 	</div>
 	<div class="flex-none">
-		{#if true}
+		{#if innerWidth < 640}
 			<div class="dropdown dropdown-end">
 				<ul class="menu menu-horizontal px-1">
 					<li tabindex="0">
