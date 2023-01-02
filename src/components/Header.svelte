@@ -26,7 +26,7 @@
 			if (!ticking) {
 				window.requestAnimationFrame(() => {
 					if (nav === null) return;
-					navbarShown = offset <= 0;
+					navbarShown = offset <= 0 || window.scrollY <= 0;
 					ticking = false;
 				});
 				ticking = true;
