@@ -18,9 +18,10 @@
 		</div>
 		<div class="hero-content max-w-[70rem] flex-col lg:flex-row-reverse">
 			<!-- FIXME Photo by <a href="https://unsplash.com/@vmxhu?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Szabo Viktor</a> on <a href="https://unsplash.com/photos/tsbcvd1YBZo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> -->
+
 			<img
 				src="https://images.unsplash.com/photo-1565886728041-a239b6a3ec42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80"
-				class="min-w-[500px !important] max-w-sm rounded-lg shadow-2xl w-full"
+				class="hidden lg:block min-w-[500px !important] max-w-sm rounded-lg shadow-2xl w-full"
 				alt="A pile of trash on the ground."
 			/>
 
