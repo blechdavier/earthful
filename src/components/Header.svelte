@@ -42,10 +42,10 @@
 	class={'navbar fixed bg-[#16a34a] transition-all z-50 ' + (navbarShown ? '' : '-translate-y-16')}
 >
 	<div class="flex-1">
-		<a href="/" class="btn btn-ghost normal-case text-xl">Earthful</a>
+		<a href="/" class="btn btn-primary normal-case text-xl">Earthful</a>
 	</div>
 	<div class="flex-none">
-		<button class="btn btn-square btn-ghost">
+		<button class="btn btn-square btn-primary">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"

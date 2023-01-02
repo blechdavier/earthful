@@ -9,7 +9,7 @@
 </svelte:head>
 <section>
 	<div
-		class="hero min-h-[max(100vh,846px)] bg-gradient-to-br from-lime-400 to-green-600 overflow-hidden"
+		class="hero min-h-screen bg-gradient-to-br from-lime-400 to-green-600 overflow-hidden pb-16 pt-16"
 	>
 		<!-- <h1 class="text-[12rem] relative top-48 left-80 text-[#fff2] font-semibold">EARTHFUL</h1> -->
 
@@ -64,7 +64,7 @@
 	</div>
 </section>
 <section>
-	<div class="flex flex-col min-h-screen bg-base-200 items-center justify-center pt-8 pb-8">
+	<div class="flex flex-col min-h-screen bg-base-200 items-center justify-center pb-16 pt-16">
 		<h1 class="text-5xl font-bold mb-8">What is Earthful?</h1>
 		<div class="2xl:flex space-y-2 2xl:space-x-4 2xl:space-y-0">
 			<div class="bg-base-100 shadow-xl rounded-3xl md:w-[640px]">
@@ -118,7 +118,7 @@
 	</div>
 </section>
 <section>
-	<div class="hero min-h-full">
+	<div class="hero min-h-screen pb-16 pt-24">
 		<div class="flex-col">
 			<div class="hero-content flex-col lg:flex-row-reverse">
 				<div class="text-center lg:text-left lg:pl-8">
