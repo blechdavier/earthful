@@ -1,4 +1,30 @@
 const config = {
+	daisyui: {
+		themes: [
+		  {
+			mytheme: {
+			
+				"primary": "#16a34a",
+          
+ "secondary": "#1e40af",
+          
+ "accent": "#44403c",
+          
+ "neutral": "#3D4451",
+          
+ "base-100": "#FFFFFF",
+          
+ "info": "#3ABFF8",
+          
+ "success": "#36D399",
+          
+ "warning": "#FBBD23",
+          
+ "error": "#F87272",
+			},
+		  },
+		],
+	  },
 	mode: 'jit',
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
@@ -23,7 +49,7 @@ const config = {
 		}
 	},
 
-	plugins: []
+	plugins: [require("daisyui")],
 };
 
 module.exports = config;

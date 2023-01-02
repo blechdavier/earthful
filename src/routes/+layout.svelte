@@ -1,12 +1,11 @@
 <script>
 	import '../app.postcss';
-	import Header from './Header.svelte';
+	import Header from '../components/Header.svelte';
+	import Footer from '../components/Footer.svelte';
 	import './styles.css';
 </script>
 
-<div
-	class="app text-black dark:text-white bg-gray-100 dark:bg-black h-full flex flex-col flex-grow"
->
+<div class="app h-full flex flex-col flex-grow">
 	<header>
 		<Header />
 	</header>
@@ -15,5 +14,7 @@
 		<slot />
 	</main>
 
-	<footer />
+	<footer>
+		<Footer />
+	</footer>
 </div>
