@@ -40,7 +40,7 @@
 
 <div
 	id="nav"
-	class="fixed bg-[#0002] shadow-xl navbar transition-all z-50 backdrop-blur uppercase text-[#fff8] tracking-wider font-bold flex items-center justify-between h-24 px-4"
+	class="fixed bg-base-100 shadow-xl navbar transition-all z-50 backdrop-blur uppercase text-primary tracking-wider font-bold flex items-center justify-between h-24 px-4"
 	class:-translate-y-full={!navbarShown}
 >
 	<div class="grow-0">
@@ -49,13 +49,19 @@
 	<div class="flex-none">
 		{#if innerWidth < 640}
 			<div class="dropdown dropdown-end">
-				<ul class="menu menu-horizontal px-1">
-					<li tabindex="0">
-						<a> <Icon src={Bars3} class="w-8 h-8" /> </a>
-						<ul class="p-2 bg-base-100">
-							<li><a>Submenu 1</a></li>
-							<li><a>Submenu 2</a></li>
-						</ul>
+				<label tabindex="0"><Icon src={Bars3} class="w-8 h-8" /></label>
+				<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+					<li>
+						<a href="/login">
+							<Icon src={UserCircle} class="w-6 h-6" />
+							<p class="text-sm">Log In</p>
+						</a>
+					</li>
+					<li>
+						<a href="/map">
+							<Icon src={Map} class="w-6 h-6" />
+							<p class="text-sm">View Map</p>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -63,7 +69,7 @@
 			<div class="flex items-center space-x-8 overflow-clip">
 				<a href="/map" class="flex flex-col justify-center items-center">
 					<Icon src={Map} class="w-6 h-6" />
-					<p class="text-sm">Map</p>
+					<p class="text-sm">View Map</p>
 				</a>
 
 				{#if user == null}

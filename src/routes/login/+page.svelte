@@ -1,30 +1,51 @@
-<script lang="ts">
-</script>
-
 <svelte:head>
 	<title>Earthful</title>
 	<meta name="description" content="Log in to your Earthful account." />
 </svelte:head>
 
-<div
-	class="flex flex-col min-w-full h-full justify-center items-center bg-cover bg-center bg-clouds dark:bg-rocks"
->
-	<div
-		class="flex flex-col items-center p-4 shadow-lg rounded-xl border bg-white bg-opacity-20 backdrop-blur-sm dark:border-stone-900 dark:bg-opacity-0"
-	>
-		<h1 class="font-medium text-xl mb-4">Log In</h1>
-		<input type="text" placeholder="username" class="p-1 rounded w-48 text-black shadow" />
-		<input type="password" placeholder="password" class="p-1 rounded w-48 text-black shadow mt-2" />
-		<div class="flex flex-row space-x-2 w-48 mt-2">
-			<a class="w-20 flex-grow" href="/signup"
-				><button class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white w-full shadow"
-					>Sign Up</button
-				></a
-			>
-			<button class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white  w-20 flex-grow shadow"
-				>Log In</button
-			>
+<section>
+	<div class="hero min-h-screen pb-16 pt-24">
+		<div class="flex-col">
+			<div class="hero-content flex-col lg:flex-row-reverse">
+				<div class="text-center lg:text-left lg:pl-8">
+					<h1 class="text-5xl font-bold">Log In</h1>
+					<p class="py-6">
+						Log in to your existing Earthful account. Click <a
+							class="link link-hover text-blue-500"
+							href="signup">here</a
+						> to make an account instead.
+					</p>
+				</div>
+				<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+					<div class="card-body">
+						<div class="form-control">
+							<label for="email" class="label">
+								<span class="label-text">Email</span>
+							</label>
+							<input id="email" type="text" placeholder="email" class="input input-bordered" />
+						</div>
+						<div class="form-control">
+							<label for="password" class="label">
+								<span class="label-text">Password</span>
+							</label>
+							<input
+								id="password"
+								type="text"
+								placeholder="password"
+								class="input input-bordered"
+							/>
+						</div>
+						<label for="forgot" class="label">
+							<a id="forgot" href="/reset" class="label-text-alt link link-hover"
+								>Forgot password?</a
+							>
+						</label>
+						<div class="form-control mt-6">
+							<button class="btn btn-primary">Sign Up</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<a href="./resetpassword" class="text-xs underline mt-2 mb-[-4px] hover:text-blue-500 dark:hover:text-blue-400">Forgot your password?</a>
 	</div>
-</div>
+</section>

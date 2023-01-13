@@ -128,91 +128,44 @@
 	<meta name="description" content="Make a new Earthful account." />
 </svelte:head>
 
-<div
-	class="flex flex-col min-w-full h-full justify-center items-center bg-cover bg-center bg-clouds dark:bg-rocks"
->
-	<div
-		class="flex flex-col space-y-2 items-center p-4 shadow-lg rounded-xl border bg-white bg-opacity-20 backdrop-blur-sm dark:border-stone-900 dark:bg-opacity-0"
-	>
-		<h1 class="font-medium text-xl pb-1">Sign Up</h1>
-		<input
-			type="email"
-			placeholder="email"
-			autocomplete="email"
-			class="p-1 rounded w-48 text-black shadow"
-			on:input={validateEmail}
-		/>
-		<input
-			type="text"
-			placeholder="username"
-			class="p-1 rounded w-48 text-black shadow"
-			on:input={validateUsername}
-		/>
-		<input
-			type="password"
-			placeholder="password"
-			id="password"
-			class="p-1 rounded w-48 text-black shadow"
-			on:input={validatePassword}
-		/>
-		{#if passwordValidity === true}
-			<input
-				type="password"
-				placeholder="confirm password"
-				class="p-1 rounded w-48 text-black shadow"
-				on:input={validateConfirmPassword}
-			/>
-		{/if}
-		{#if emailValidity && emailValidity !== true}
-			<p class="text-red-600 text-xs">{emailValidity}</p>
-		{/if}
-		{#if usernameValidity && usernameValidity !== true}
-			<p class="text-red-600 text-xs">{usernameValidity}</p>
-		{/if}
-		{#if passwordValidity && passwordValidity !== true}
-			<p class="text-red-600 text-xs">{passwordValidity}</p>
-		{/if}
-		{#if passwordConfirmValidity && passwordConfirmValidity !== true}
-			<p class="text-red-600 text-xs">{passwordConfirmValidity}</p>
-		{/if}
-		{#if blankFieldMessage && showBlankFieldMessage}
-			<p class="text-red-600 text-xs">{blankFieldMessage}</p>
-		{/if}
-		<div class="flex flex-row space-x-2 w-48">
-			{#if usernameValidity === true && passwordValidity === true && passwordConfirmValidity === true && emailValidity === true}
-				<a class="w-20 flex-grow" href="/signup"
-					><button class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white w-full shadow"
-						>Log In</button
-					></a
-				>
-				<button class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white  w-20 flex-grow shadow"
-					>Sign Up</button
-				>
-			{:else if (usernameValidity == undefined || usernameValidity === true) && (passwordValidity == undefined || passwordValidity === true) && (passwordConfirmValidity == undefined || passwordConfirmValidity === true) && (emailValidity == undefined || emailValidity === true)}
-				<a class="w-20 flex-grow" href="/login" title="Go to the login page."
-					><button class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white w-full shadow"
-						>Log In</button
-					></a
-				>
-				<button
-					class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white  w-20 flex-grow shadow"
-					title="Must enter valid credentials to sign up."
-					on:click={() => {
-						showBlankFieldMessage = true;
-					}}>Sign Up</button
-				>
-			{:else}
-				<a class="w-20 flex-grow" href="/login" title="Go to the login page."
-					><button class="p-1 rounded bg-blue-600 hover:bg-blue-500 text-white w-full shadow"
-						>Log In</button
-					></a
-				>
-				<button
-					class="p-1 rounded bg-neutral-600 text-white  w-20 flex-grow shadow"
-					disabled
-					title="Must enter valid credentials to sign up.">Sign Up</button
-				>
-			{/if}
+<section>
+	<div class="hero min-h-screen pb-16 pt-24">
+		<div class="flex-col">
+			<div class="hero-content flex-col lg:flex-row-reverse">
+				<div class="text-center lg:text-left lg:pl-8">
+					<h1 class="text-5xl font-bold">Sign Up</h1>
+					<p class="py-6">
+						Get started with a free account and start making a difference today. Click <a
+							class="link link-hover text-blue-500"
+							href="login">here</a
+						> to log in instead.
+					</p>
+				</div>
+				<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+					<div class="card-body">
+						<div class="form-control">
+							<label for="email" class="label">
+								<span class="label-text">Email</span>
+							</label>
+							<input id="email" type="text" placeholder="email" class="input input-bordered" />
+						</div>
+						<div class="form-control">
+							<label for="password" class="label">
+								<span class="label-text">Password</span>
+							</label>
+							<input
+								id="password"
+								type="text"
+								placeholder="password"
+								class="input input-bordered"
+							/>
+						</div>
+						<div class="form-control mt-6">
+							<button class="btn btn-primary">Sign Up</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
+</section>
