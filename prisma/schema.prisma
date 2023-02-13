@@ -27,7 +27,8 @@ model CleanupEvent {
 model DebrisLocationPost {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String?
+  latitude  Float
+  longitude Float
+  debrisType Int
   events    CleanupEvent[]
 }

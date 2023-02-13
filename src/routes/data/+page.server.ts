@@ -3,6 +3,6 @@ import { prisma } from '$lib/server/prisma'
 
 export const load: PageServerLoad = async ({ fetch }) => {
     return {
-        dataPoints: await prisma.dataPoint.findMany(),
+        dataPoints: await prisma.debrisLocationPost.findMany(),
     }
 }
