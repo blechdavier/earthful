@@ -3,4 +3,4 @@
 	<input type="password" name="password" placeholder="password" />
 	<button type="submit">Login</button>
 </form>
-<a href="/signup">Don't have an account?</a>
+<a href="/register">Don't have an account?</a>

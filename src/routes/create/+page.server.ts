@@ -27,7 +27,6 @@ export const actions: Actions = {
                     debrisType: debrisType_num,
                 }
             })
-            console.log(test);
         } catch (err) {
             console.error(err)
             return fail(500, {message: 'Could not create the data point'})
