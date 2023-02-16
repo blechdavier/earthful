@@ -1,0 +1,4 @@
+<h1>Earthful</h1>
+
+<p>Here is some information about the app and its development:</p>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam et natus cupiditate repellendus vitae. Quo praesentium magnam qui deleniti voluptatum voluptatem at nulla sunt quasi, culpa adipisci placeat ut, molestiae sit laborum vel sapiente eaque porro, veniam soluta! Accusantium, explicabo architecto maiores distinctio soluta repellendus, quis omnis ex deserunt mollitia corporis vel esse ad labore in debitis quisquam iure quaerat. Aliquam quaerat eos, odio quia voluptates architecto magnam iusto vero aut sequi nam eaque repellat, ducimus voluptas ut iste corporis! Et quae similique qui beatae atque sapiente adipisci architecto placeat, tempora illo nemo quisquam temporibus vitae velit. Quam, fugit saepe!</p>

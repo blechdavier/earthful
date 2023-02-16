@@ -3,12 +3,10 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width" viewport-fit=cover/>
-		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
-		<meta name="theme-color" content="#16a34a" />
+		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-prefetch>
-		<div style="display: contents; overflow-x: hidden;">%sveltekit.body%</div>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
