@@ -4,9 +4,8 @@ import type { Actions, PageServerLoad } from "./$types";
 import { z } from "zod";
 
 const registerSchema = z.object({
-    name: z.string().min(1).max(64).trim(),
-    email: z.string().min(1).max(64).email(),
-    password: z.string().min(8).max(1024),
+    email: z.string({ required_error: "Email is required." }).min(1, { message: "Email is required." }).max(1024, { message: "Email may be no longer than 1024 characters." }).email({ message: "Invalid email address." }),
+    password: z.string({ required_error: "Password is required." }).min(1, { message: "Password is required" }).max(1024, { message: "Password may be no longer than 1024 characters." })
 })
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -26,7 +25,14 @@ export const actions: Actions = {
                 email,
                 password
             })
-        } catch {
+        } catch (err) {
+            if (err instanceof z.ZodError) {
+                const { fieldErrors: errors } = err.flatten()
+                return {
+                    data: { email, password },
+                    errors
+                }
+            }
             return fail(400, { message: "Invalid data" })
         }
 
@@ -38,7 +44,7 @@ export const actions: Actions = {
             locals.setSession(session)
         } catch (err) {
             console.error(err)
-            return fail(400, { message: "Could not login user." })
+            return fail(400, { message: "Could not find user with these credentials" })
         }
         throw redirect(302, '/')
     }
