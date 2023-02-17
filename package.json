@@ -25,9 +25,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@beyonk/svelte-mapbox": "^9.0.5",
 		"@lucia-auth/adapter-prisma": "^0.4.0",
 		"@lucia-auth/sveltekit": "^0.6.3",
 		"@prisma/client": "^4.10.1",
-		"lucia-auth": "^0.6.0"
+		"lucia-auth": "^0.6.0",
+		"zod": "^3.20.6"
 	}
 }
