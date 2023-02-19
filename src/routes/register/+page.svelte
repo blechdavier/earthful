@@ -39,7 +39,7 @@
 		<label for="email">{errors?.email[0]}</label>
 	{/if}
 	<label for="password">Password</label>
-	<input type="password" name="password" value={data.password} />
+	<input type="password" name="password" />
 	{#if errors.password}
 		<label for="password">{errors?.password[0]}</label>
 	{/if}
