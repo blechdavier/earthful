@@ -28,12 +28,13 @@ export const actions: Actions = {
         } catch (err) {
             if (err instanceof z.ZodError) {
                 const { fieldErrors: errors } = err.flatten()
-                return {
-                    data: { email, password },
+                return fail(400, {
+                    data: { email },
                     errors
-                }
+                })
+            } else {
+                throw err
             }
-            return fail(400, { message: "Invalid data" })
         }
 
         try {
@@ -44,7 +45,15 @@ export const actions: Actions = {
             locals.setSession(session)
         } catch (err) {
             console.error(err)
-            return fail(400, { message: "Could not find user with these credentials" })
+            return fail(400, {
+                data: {
+                    email,
+                },
+                errors: {
+                    email: [],
+                    password: ["Invalid email or password."]
+                }
+            })
         }
         throw redirect(302, '/')
     }

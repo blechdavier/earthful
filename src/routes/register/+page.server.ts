@@ -36,10 +36,10 @@ export const actions: Actions = {
             // this is sent to +page.svelte as the form
             if (err instanceof z.ZodError) {
                 const { fieldErrors: errors } = err.flatten()
-                return {
+                return fail(400, {
                     data: { name, email },
                     errors
-                }
+                })
             }
         }
 
@@ -59,7 +59,7 @@ export const actions: Actions = {
             })
         } catch (err) {
             console.error(err)
-            return fail(400, { message: 'Could not register user' })
+            return fail(400, { errors: { email: ["Email is already in use."] } })
         }
         // log in the user
         try {
@@ -67,11 +67,13 @@ export const actions: Actions = {
             const key = await auth.validateKeyPassword("email", email, password)
             const session = await auth.createSession(key.userId)
             locals.setSession(session)
+            // redirect to the home page
+            throw redirect(302, '/')
         }
         catch (err) {
             // if it can't log in, go to the login page
             console.error(err)
-            return redirect(302, '/login')
+            throw redirect(302, '/login')
         }
     }
 };
