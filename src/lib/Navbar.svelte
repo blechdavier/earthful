@@ -17,21 +17,6 @@
 		<div class="flex flex-1 items-center justify-end md:justify-between">
 			<nav aria-label="Site Nav" class="hidden md:block">
 				<ul class="flex items-center gap-6 text-sm">
-					<!-- <a href="/">home</a>
-					<a href="/create">create</a>
-					<a href="/data">data</a>
-					<a href="/about">about</a>
-					<a href="/users">users</a> -->
-					<!-- {#if user}
-						<p>Hi, {user.name}.</p>
-						<form method="POST">
-							<button formaction="/logout" type="submit" name="logout">logout</button>
-						</form>
-					{:else}
-						<a href="/login">login</a>
-						<a href="/register">register</a>
-					{/if} -->
-
 					<li>
 						<a class="text-gray-500 transition hover:text-gray-500/75" href="/about"> About </a>
 					</li>
@@ -52,7 +37,7 @@
 
 			<div class="flex items-center gap-4">
 				{#if user}
-					<p class="text-gray-500 transition hover:text-gray-500/75">Hi, {user.name}.</p>
+					<p class="text-gray-500 transition">Hi, {user.name}.</p>
 
 					<form method="POST" class="flex items-center gap-4">
 						<button
