@@ -32,7 +32,6 @@
 		"@lucia-auth/adapter-prisma": "^0.4.0",
 		"@lucia-auth/sveltekit": "^0.6.3",
 		"@prisma/client": "^4.10.1",
-		"@svelte-parts/map": "^0.0.24",
 		"@tailwindcss/forms": "^0.5.3",
 		"lucia-auth": "^0.6.0",
 		"ol": "^7.2.2",

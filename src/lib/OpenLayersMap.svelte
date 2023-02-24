@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	// placeholder for the map, tiles, and marker compoents. Then, onMount, we'll create the map and add the components to it.
 	import { onMount } from 'svelte';
 
@@ -6,16 +6,25 @@
 	import View from 'ol/View';
 	import TileLayer from 'ol/layer/Tile';
 	import XYZ from 'ol/source/XYZ';
-	import { fromLonLat } from 'ol/proj';
-	import { Attribution, defaults as defaultControls } from 'ol/control.js';
+
+	// export let dataPoints: { latitude: number; longitude: number; id: number; debrisType: number }[] =
+	// 	[];
+
 	onMount(() => {
+		let zoom = window.devicePixelRatio;
+		let zoomString = '';
+		if (zoom > 1) {
+			zoomString = '@' + zoom + 'x';
+		}
+		console.log('zoom: ' + zoom);
 		let map = new Map({
 			target: 'map',
 			layers: [
 				new TileLayer({
 					source: new XYZ({
 						// TODO IMPORTANT https://carto.com/grants/#form
-						url: 'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
+						url:
+							'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}' + zoomString + '.png'
 					})
 				})
 			],
@@ -25,17 +34,6 @@
 			}),
 			controls: []
 		});
-
-		fetch('https://ipapi.co/json/')
-			.then((response) => response.json())
-			.then((data) => {
-				//glide to the user's approximate location
-				map.getView().animate({
-					center: fromLonLat([data.longitude, data.latitude]),
-					zoom: 10,
-					duration: 1000
-				});
-			});
 	});
 </script>
 

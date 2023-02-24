@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id      String         @id @unique
-  name    String
-  events  CleanupEvent[]
-  session Session[]
-  Key     Key[]
+  id                 String               @id @unique
+  name               String
+  session            Session[]
+  Key                Key[]
+  debrisLocationPosts DebrisLocationPost[]
 
   @@map("user")
 }
@@ -42,19 +42,12 @@ model Key {
   @@map("key")
 }
 
-model CleanupEvent {
-  id    Int                  @id @default(autoincrement())
-  name  String
-  posts DebrisLocationPost[]
-  users User[]
-}
-
 model DebrisLocationPost {
-  id             Int          @id @default(autoincrement())
-  createdAt      DateTime     @default(now())
-  latitude       Float
-  longitude      Float
-  debrisType     Int
-  event          CleanupEvent @relation(fields: [cleanupEventId], references: [id])
-  cleanupEventId Int
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  latitude   Float
+  longitude  Float
+  debrisType Int
+  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId     String
 }
