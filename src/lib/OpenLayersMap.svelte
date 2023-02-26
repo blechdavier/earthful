@@ -1,5 +1,5 @@
 <script lang="ts">
-	// placeholder for the map, tiles, and marker compoents. Then, onMount, we'll create the map and add the components to it.
+	// placeholder for the map, tiles, and marker components. Then, onMount, we'll create the map and add the components to it.
 	import { onMount } from 'svelte';
 
 	import Map from 'ol/Map';
@@ -12,6 +12,10 @@
 
 	onMount(() => {
 		let zoom = window.devicePixelRatio;
+		// the api allows adding a zoom level to the URL to get an image with a higher pixel scaling
+		// for example, basemaps.cartocdn.com/.../z/x/y@2x.png would return the same image as /z/x/y.png
+		// but with twice the resolution
+		// if we don't do this the maps look crusty on phones which is pretty bad
 		let zoomString = '';
 		if (zoom > 1) {
 			zoomString = '@' + zoom + 'x';
