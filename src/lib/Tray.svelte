@@ -4,9 +4,7 @@
 	export let collapseMessage: string = 'Collapse Tray';
 </script>
 
-<div
-	class="flex flex-col sm:flex-row max-h-[calc(100dvh-64px)] sm:w-auto sm:max-w-[100dvw] border-gray-100"
->
+<div class="flex flex-col sm:flex-row max-h-[calc(100dvh-64px)] sm:max-w-[100dvw]">
 	<!-- A button to open and close the tray and a slot for content -->
 	<button
 		class="rounded-lg bg-teal-600 text-white font-medium text-sm transition-colors hover:bg-teal-700 p-2.5 flex items-center justify-center shadow-lg"
@@ -39,8 +37,10 @@
 		{/if}
 	</button>
 	{#if open}
-		<div class="sm:overflow-scroll">
-			<slot />
+		<div class="asdasdf">
+			<div class="overflow-auto max-h-full max-w-sm">
+				<slot />
+			</div>
 		</div>
 	{/if}
 </div>
