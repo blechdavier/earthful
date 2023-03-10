@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { promises as fs } from "fs";
+// import synchronous fs
+import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync } from 'fs'
 
 let total_pages: number | undefined;
 
@@ -8,7 +9,7 @@ const ENTRIES_PER_PAGE = 50000;
 
 export let pages: { [key: number]: PageAndTimestamp } = {}; // honestly, this should be a Map, but I'm lazy, or honestly maybe just an array
 
-
+// FIXME test for if the api fails and handle that properly instead of just hoping it goes away
 
 type PageAndTimestamp = {
     page: number,
@@ -99,7 +100,7 @@ async function fetchApiPage(page: number): Promise<ApiItem[]> {
         console.log(`parsed page ${page}, got ${pages[page].data.length} results`);
         if (DISK_CACHE) {
             console.log("caching to disk");
-            await fs.writeFile(`./api_cache/${page}.json`, JSON.stringify(pages[page]));
+            writeFileSync(`./api_cache/${page}.json`, JSON.stringify(pages[page]));
         }
         console.log("done");
         return parsed;
@@ -112,10 +113,13 @@ async function fetchApiPage(page: number): Promise<ApiItem[]> {
 export async function startApiPageInterval() {
     if (DISK_CACHE) {
         console.log("Loading API cache from disk");
-        let files = await fs.readdir("./api_cache");
+        if (!existsSync("./api_cache")) {
+            await mkdirSync("./api_cache");
+        }
+        let files = await readdirSync("./api_cache");
         for (const file of files) {
             let filePage = Number(file.replace(".json", ""));
-            let fileContents = await fs.readFile(`./api_cache/${filePage}.json`, "utf-8");
+            let fileContents = await readFileSync(`./api_cache/${filePage}.json`, "utf-8");
             pages[filePage] = {
                 page: filePage,
                 timestamp: -1, // we don't know when this was cached, so we'll just assume it's ancient
