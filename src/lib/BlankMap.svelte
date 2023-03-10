@@ -6,9 +6,8 @@
 	import View from 'ol/View';
 	import TileLayer from 'ol/layer/Tile';
 	import XYZ from 'ol/source/XYZ';
-
-	// export let dataPoints: { latitude: number; longitude: number; id: number; debrisType: number }[] =
-	// 	[];
+	import Control from 'ol/control/Control';
+	import { text } from 'svelte/internal';
 
 	onMount(() => {
 		let zoom = window.devicePixelRatio;
@@ -21,7 +20,7 @@
 			zoomString = '@' + zoom + 'x';
 		}
 		console.log('zoom: ' + zoom);
-		let map = new Map({
+		new Map({
 			target: 'map',
 			layers: [
 				new TileLayer({

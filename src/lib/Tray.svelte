@@ -37,8 +37,8 @@
 		{/if}
 	</button>
 	{#if open}
-		<div class="asdasdf">
-			<div class="overflow-auto max-h-full max-w-sm">
+		<div class="w-full">
+			<div class="overflow-auto max-h-full">
 				<slot />
 			</div>
 		</div>

@@ -36,3 +36,30 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+
+## Notes
+
+analysis
+
+persistent after collection
+pie graph of the different types
+maps with pins might be good
+top items (all different types)
+consistent colors
+heatmap would be very cool
+download graphs (image)
+
+top items
+top categories
+
+not super technical for most users, maybe have the option
+multiple polygons
+filter properly
+
+wind?
+
+satellite view for associating real world locations with hotspots
+
+usage
+
