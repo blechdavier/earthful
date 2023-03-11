@@ -1,19 +1,16 @@
 <script lang="ts">
-	import type { ResizeEvent } from 'leaflet';
 	import { onMount } from 'svelte';
 	export let user: null | { name: string };
 	let open = false;
-
-	onMount(() => {
-		window.addEventListener('resize', (e: UIEvent) => {
-			// close the menu if the screen is big enough
-			if (window.innerWidth >= 768) {
-				open = false;
-			} else {
-			}
-		});
-	});
 </script>
+
+<svelte:window
+	on:resize={() => {
+		if (window.innerWidth >= 768) {
+			open = false;
+		}
+	}}
+/>
 
 <!--
   Modified from https://www.hyperui.dev/

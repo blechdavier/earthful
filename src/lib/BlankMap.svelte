@@ -6,8 +6,16 @@
 	import View from 'ol/View';
 	import TileLayer from 'ol/layer/Tile';
 	import XYZ from 'ol/source/XYZ';
-	import Control from 'ol/control/Control';
-	import { text } from 'svelte/internal';
+	import { defaults as defaultControls, Control } from 'ol/control';
+	import { defaults } from 'ol/interaction';
+
+	const satellite_tile_url = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`;
+	const simple_tile_url = `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}`;
+
+	let satelliteActive = false;
+
+	let map: Map;
+	let minimap: Map;
 
 	onMount(() => {
 		let zoom = window.devicePixelRatio;
@@ -17,17 +25,15 @@
 		// if we don't do this the maps look crusty on phones which is pretty bad
 		let zoomString = '';
 		if (zoom > 1) {
-			zoomString = '@' + zoom + 'x';
+			zoomString = '@' + Math.ceil(zoom) + 'x';
 		}
-		console.log('zoom: ' + zoom);
-		new Map({
+		map = new Map({
 			target: 'map',
 			layers: [
 				new TileLayer({
 					source: new XYZ({
 						// TODO IMPORTANT https://carto.com/grants/#form
-						url:
-							'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}' + zoomString + '.png'
+						url: (satelliteActive ? satellite_tile_url : simple_tile_url) + zoomString + '.png'
 					})
 				})
 			],
@@ -35,9 +41,62 @@
 				center: [0, 0],
 				zoom: 2
 			}),
-			controls: []
+			controls: defaultControls().extend([])
+		});
+		minimap = new Map({
+			target: 'minimap',
+			layers: [
+				new TileLayer({
+					source: new XYZ({
+						// TODO IMPORTANT https://carto.com/grants/#form
+						url: (satelliteActive ? simple_tile_url : satellite_tile_url) + zoomString + '.png'
+					})
+				})
+			],
+			view: new View({
+				center: [0, 0],
+				zoom: 0
+			}),
+			controls: [],
+			interactions: []
+		});
+		map.on('moveend', () => {
+			// set the minimap to the same view as the main map
+			minimap.getView().setCenter(map.getView().getCenter());
+			const zoom = map.getView().getZoom() ?? 0;
+			const mapSize = map.getSize() ?? [256, 256];
+			console.log('zoom', zoom, 'mapSize', mapSize, 'log2', Math.log2(mapSize[1] / 64));
+			console.log('zoom', zoom - Math.log2(mapSize[1] / 64));
+			minimap.getView().setZoom(zoom - Math.log2(mapSize[1] / 64));
 		});
 	});
+
+	function toggleSatellite() {
+		satelliteActive = !satelliteActive;
+		let mapTileLayer: TileLayer<XYZ> = map.getLayers().getArray()[0] as TileLayer<XYZ>;
+		let minimapTileLayer: TileLayer<XYZ> = minimap.getLayers().getArray()[0] as TileLayer<XYZ>;
+		mapTileLayer.setSource(
+			new XYZ({
+				url: (satelliteActive ? satellite_tile_url : simple_tile_url) + '.png'
+			})
+		);
+		minimapTileLayer.setSource(
+			new XYZ({
+				url: (satelliteActive ? simple_tile_url : satellite_tile_url) + '.png'
+			})
+		);
+	}
 </script>
 
 <div id="map" class="w-full h-full" />
+<label class="sr-only" for="minimap">Toggle Satellite View</label>
+<button
+	id="minimap"
+	class="w-16 aspect-square absolute bottom-4 left-4 rounded-lg overflow-hidden border-2 shadow-lg"
+	title="Toggle Satellite View"
+	class:bg-slate-900={!satelliteActive}
+	class:border-white={!satelliteActive}
+	class:bg-white={satelliteActive}
+	class:border-gray-500={satelliteActive}
+	on:click={toggleSatellite}
+/>
