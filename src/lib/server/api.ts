@@ -1,10 +1,11 @@
 import { z } from "zod";
 // import synchronous fs
 import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync } from 'fs'
+import { dev } from "$app/environment";
 
 let total_pages: number | undefined;
 
-const DISK_CACHE = true;
+const DISK_CACHE = dev;
 const ENTRIES_PER_PAGE = 50000;
 
 export let pages: { [key: number]: PageAndTimestamp } = {}; // honestly, this should be a Map, but I'm lazy, or honestly maybe just an array
