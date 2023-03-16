@@ -17,6 +17,8 @@
 	let map: Map;
 	let minimap: Map;
 
+	// TODO fix the minimap lmao
+
 	onMount(() => {
 		let zoom = window.devicePixelRatio;
 		// the api allows adding a zoom level to the URL to get an image with a higher pixel scaling

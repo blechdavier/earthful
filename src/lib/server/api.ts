@@ -2,14 +2,13 @@ import { z } from "zod";
 // import synchronous fs
 import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { dev } from "$app/environment";
-import { generateRandomString } from "lucia-auth";
 
 let total_pages: number | undefined;
 
 const DISK_CACHE = dev;
 const ENTRIES_PER_PAGE = 50000;
 
-let pages: { [key: number]: PageAndTimestamp } = {}; // honestly, this should be a Map, but I'm lazy, or honestly maybe just an array
+export let pages: { [key: number]: PageAndTimestamp } = {}; // honestly, this should be a Map, but I'm lazy, or honestly maybe just an array
 
 // FIXME test for if the api fails and handle that properly instead of just hoping it goes away
 
@@ -31,19 +30,10 @@ const apiItem = z.object({
     // ),
     // itemname: z.string(),
     // material: z.string(),
-    quantity: z.preprocess(
-        Number,
-        z.number()
-    ),
+    quantity: z.string().transform(Number),
     // description: z.string().nullable(),
-    latitude: z.preprocess(
-        Number,
-        z.number()
-    ),
-    longitude: z.preprocess(
-        Number,
-        z.number()
-    ),
+    latitude: z.string().transform(Number),
+    longitude: z.string().transform(Number),
     // altitude: z.preprocess(
     //     Number,
     //     z.number()
@@ -53,16 +43,23 @@ const apiItem = z.object({
     //     z.number()
     // ),
     // location: z.string(),
-    timestamp: z.preprocess(
-        Number,
-        z.number()
-    ),
-    // project_name: z.string().nullable(),
+    timestamp: z.string().transform((fakeDateString) => {
+        // Format of the bad date string is yyyymmddhhmmss
+        // We need to convert it to yyyy-mm-dd hh:mm:ss
+        let year = fakeDateString.slice(0, 4);
+        let month = fakeDateString.slice(4, 6);
+        let day = fakeDateString.slice(6, 8);
+        let hour = fakeDateString.slice(8, 10);
+        let minute = fakeDateString.slice(10, 12);
+        let second = fakeDateString.slice(12, 14);
+        return new Date(`${year}-${month}-${day} ${hour}:${minute}:${second}`).getTime();
+    }),
+    project_name: z.string().nullable(),
     // project_id: z.preprocess(
     //     Number,
     //     z.number()
     // ).nullable(),
-    // username: z.string().nullable(),
+    username: z.string().nullable(),
     // manual_upload: z.preprocess(
     //     Boolean,
     //     z.boolean()
@@ -90,7 +87,7 @@ async function fetchApiPage(page: number): Promise<ApiItem[]> {
         );
         console.log(`fetched page ${page}, parsing`);
         let result = await response.json();
-        let parsed: ApiItem[] = apiSchema.parse(result.data);
+        let parsed = apiSchema.parse(result.data);
         pages[page] = {
             page: page,
             timestamp: Date.now(),
@@ -101,7 +98,7 @@ async function fetchApiPage(page: number): Promise<ApiItem[]> {
         }
         console.log(`parsed page ${page}, got ${pages[page].data.length} results`);
         if (DISK_CACHE) {
-            console.log("caching to disk");
+            console.log(`caching ${pages[page].data.length} items to disk`);
             writeFileSync(`./api_cache/${page}.json`, JSON.stringify(pages[page]));
         }
         console.log("done");
@@ -119,23 +116,28 @@ export async function startApiPageInterval() {
             mkdirSync("./api_cache");
         }
         let files = readdirSync("./api_cache");
+        let highestPage = 0;
         for (const file of files) {
             let filePage = Number(file.replace(".json", ""));
             let fileContents = readFileSync(`./api_cache/${filePage}.json`, "utf-8");
             pages[filePage] = {
                 page: filePage,
                 timestamp: -1, // we don't know when this was cached, so we'll just assume it's ancient
-                data: apiSchema.parse(JSON.parse(fileContents).data)
+                data: JSON.parse(fileContents).data as ApiItem[]
             };
+            if (filePage > highestPage) {
+                highestPage = filePage;
+            }
         }
         // skip this if there is no API cache found
-        if (Object.keys(pages).length > 0) {
+        if (highestPage > 0) {
             // see if the highest page is the last page
-            const length = pages[Object.keys(pages).length].data.length;
-            console.log(`Last page was ${length} entries`);
+            const length = pages[highestPage].data.length;
+            console.log(`Last page was ${length} entries, checking if it's the last page`);
+            // FIXME this code might break if there's a multiple of 50,000 entries in the database
             if (length < ENTRIES_PER_PAGE) {
                 console.log(`Last page was ${length} entries, assuming this is the last page, and setting total_pages to ${Object.keys(pages).length}`)
-                total_pages = Object.keys(pages).length;
+                total_pages = highestPage;
             }
         }
         console.log("Loaded API cache from disk");
@@ -144,15 +146,18 @@ export async function startApiPageInterval() {
 
     console.log("Scraping API pages to fill cache");
 
-    // Fetch pages until we have all of them at least to some degree
+    // Fetch pages until we have all of them
+    // this is only one pass and errors are ignored, so it's not perfect
     let page = 1;
     while (total_pages === undefined || Object.keys(pages).length < total_pages) {
-        await fetchApiPage(page);
+        if (!pages.hasOwnProperty(page)) {
+            await fetchApiPage(page);
+        }
         page++;
     }
     console.log("Cache full, starting interval");
 
-    // Then, every minute, fetch the oldest page
+    // Then, every 5 minutes, fetch the oldest page
     setInterval(async () => {
         let oldestPage = 1;
         let oldestTimestamp = Date.now();
@@ -169,17 +174,16 @@ export async function startApiPageInterval() {
 
 export function getApiItems(lte: Date, gte: Date): ApiItem[] {
     console.log(`getting items between ${gte} and ${lte}`)
+    console.log(`there are ${Object.keys(pages).length} pages`)
     const gteTimestamp = gte.getTime();
     const lteTimestamp = lte.getTime();
     console.log(`getting items between ${gteTimestamp} and ${lteTimestamp}`)
     let result: ApiItem[] = [];
     for (const page in pages) {
         for (const item of pages[page].data) {
-            // this has the stupidest timestamp format ever
-            // it's yyyymmddhhmmss as one number (so 20210503120000 is 2021-05-03 12:00:00)
-            if (item.timestamp >= gteTimestamp && item.timestamp <= lteTimestamp) {
-                result.push(item);
-            }
+            // if (item.timestamp >= gteTimestamp && item.timestamp <= lteTimestamp) {
+            result.push(item);
+            // }
         }
     }
     return result;
