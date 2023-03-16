@@ -1,5 +1,5 @@
 import type { Actions } from '@sveltejs/kit'
-import { pages, type ApiItem } from '$lib/server/api'
+import { getApiItems, type ApiItem } from '$lib/server/api'
 
 function compareByQuantity(a, b) {
     if (a.quantity > b.quantity) {
@@ -14,15 +14,14 @@ function compareByQuantity(a, b) {
 export const actions: Actions = {
     default: async ({ request }) => {
         const formData = await request.formData();
-        const analysis = formData.get('submit') === 'analysis';
+        const analysis = formData.get('action') === 'analysis';
+
+        const lte = formData.get('lte') === '' ? new Date() : new Date(formData.get('lte'));
+        const gte = formData.get('gte') === '' ? new Date(0) : new Date(formData.get('gte'));
+
 
         if (analysis) {
-            let apiItems: ApiItem[] = [];
-            for (const page in pages) {
-                console.log(`analyzing results from page ${page}`)
-                apiItems = apiItems.concat(pages[page].data)
-            }
-            console.log(`analyzing ${apiItems.length} results`)
+            let apiItems = getApiItems(lte, gte);
 
             // these two properties are the ones that actually matter
             let masterMaterials: { [key: string]: number } = {}

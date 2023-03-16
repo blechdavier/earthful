@@ -2,13 +2,14 @@ import { z } from "zod";
 // import synchronous fs
 import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { dev } from "$app/environment";
+import { generateRandomString } from "lucia-auth";
 
 let total_pages: number | undefined;
 
 const DISK_CACHE = dev;
 const ENTRIES_PER_PAGE = 50000;
 
-export let pages: { [key: number]: PageAndTimestamp } = {}; // honestly, this should be a Map, but I'm lazy, or honestly maybe just an array
+let pages: { [key: number]: PageAndTimestamp } = {}; // honestly, this should be a Map, but I'm lazy, or honestly maybe just an array
 
 // FIXME test for if the api fails and handle that properly instead of just hoping it goes away
 
@@ -115,12 +116,12 @@ export async function startApiPageInterval() {
     if (DISK_CACHE) {
         console.log("Loading API cache from disk");
         if (!existsSync("./api_cache")) {
-            await mkdirSync("./api_cache");
+            mkdirSync("./api_cache");
         }
-        let files = await readdirSync("./api_cache");
+        let files = readdirSync("./api_cache");
         for (const file of files) {
             let filePage = Number(file.replace(".json", ""));
-            let fileContents = await readFileSync(`./api_cache/${filePage}.json`, "utf-8");
+            let fileContents = readFileSync(`./api_cache/${filePage}.json`, "utf-8");
             pages[filePage] = {
                 page: filePage,
                 timestamp: -1, // we don't know when this was cached, so we'll just assume it's ancient
@@ -164,4 +165,22 @@ export async function startApiPageInterval() {
         console.log(`Oldest page was ${oldestPage}, freshening it up (total pages: ${total_pages})`)
         await fetchApiPage(oldestPage);
     }, 1000 * 60 * 5);
+}
+
+export function getApiItems(lte: Date, gte: Date): ApiItem[] {
+    console.log(`getting items between ${gte} and ${lte}`)
+    const gteTimestamp = gte.getTime();
+    const lteTimestamp = lte.getTime();
+    console.log(`getting items between ${gteTimestamp} and ${lteTimestamp}`)
+    let result: ApiItem[] = [];
+    for (const page in pages) {
+        for (const item of pages[page].data) {
+            // this has the stupidest timestamp format ever
+            // it's yyyymmddhhmmss as one number (so 20210503120000 is 2021-05-03 12:00:00)
+            if (item.timestamp >= gteTimestamp && item.timestamp <= lteTimestamp) {
+                result.push(item);
+            }
+        }
+    }
+    return result;
 }

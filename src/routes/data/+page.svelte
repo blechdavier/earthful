@@ -74,18 +74,18 @@
 					</p>
 				</div>
 				<form method="POST" class="text-sm" use:enhance={submitDataQuery}>
-					<label for="fromDate">From</label>
+					<label for="gte">From</label>
 					<input
-						name="fromDate"
+						name="gte"
 						type="date"
-						id="fromDate"
+						id="gte"
 						class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm my-2"
 					/>
-					<label for="toDate">To</label>
+					<label for="lte">To</label>
 					<input
-						name="toDate"
+						name="lte"
 						type="date"
-						id="toDate"
+						id="lte"
 						class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm my-2"
 					/>
 					<label for="locationPicker">Location Filter</label>
@@ -95,7 +95,8 @@
 						<option value="Polygon">Custom Polygon</option>
 					</select>
 					<button
-						name="submit"
+						type="submit"
+						name="action"
 						value="analysis"
 						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-3"
 						on:click={getDataAnalysis}
@@ -103,7 +104,8 @@
 						{hasSubmitted ? 'Loading' : 'Analyze'}
 					</button>
 					<button
-						name="submit"
+						type="submit"
+						name="action"
 						value="export"
 						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-3"
 					>
