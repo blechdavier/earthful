@@ -71,7 +71,7 @@
 	</div>
 	<div>
 		<div
-			class="m-4 flex items-center justify-center underline decoration-pink-500 decoration-wavy h-32 border-pink-100 border-4 border-dashed"
+			class="m-4 flex items-center justify-center underline decoration-pink-500 decoration-wavy h-32 border-pink-100 border-4 border-dashed p-8"
 		>
 			<p>
 				thanks to all the awesome people who made this project possible <span class="text-pink-600"

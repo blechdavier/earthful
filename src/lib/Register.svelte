@@ -35,8 +35,7 @@
 		<h1 class="text-2xl font-bold sm:text-3xl">Get started today!</h1>
 
 		<p class="mt-4 text-gray-500">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
-			ipsa culpa autem, at itaque nostrum!
+			Get started with an Earthful account today. We're so excited you're here!
 		</p>
 	</div>
 

@@ -29,10 +29,7 @@
 	<div class="mx-auto max-w-lg text-center">
 		<h1 class="text-2xl font-bold sm:text-3xl">Welcome back!</h1>
 
-		<p class="mt-4 text-gray-500">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
-			ipsa culpa autem, at itaque nostrum!
-		</p>
+		<p class="mt-4 text-gray-500">Welcome to Earthful. We're so excited you're back!</p>
 	</div>
 
 	<form

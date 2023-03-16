@@ -154,12 +154,12 @@
 		</div>
 	</div>
 	<div class="absolute right-0 overflow-hidden z-50 shadow-lg rounded-lg">
-		<div class="transition-all w-48 bg-white dark:bg-black pb-1" class:-mt-96={!open}>
+		<div class="transition-all w-48 bg-white pb-1" class:-mt-96={!open}>
 			{#if open}
 				<nav aria-label="Submenu Site Nav" class="flex flex-col space-y-1">
 					<a
 						href="/"
-						class="block rounded-lg hover:bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-200"
+						class="block rounded-lg hover:bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
 						on:click={() => {
 							open = false;
 						}}
@@ -169,7 +169,7 @@
 
 					<a
 						href="/about"
-						class="block rounded-lg hover:bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-200"
+						class="block rounded-lg hover:bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
 						on:click={() => {
 							open = false;
 						}}
@@ -179,7 +179,7 @@
 
 					<a
 						href="/data"
-						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 						on:click={() => {
 							open = false;
 						}}
@@ -189,7 +189,7 @@
 
 					<a
 						href="/leaderboard"
-						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 						on:click={() => {
 							open = false;
 						}}
@@ -199,7 +199,7 @@
 
 					<a
 						href="/thanks"
-						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 						on:click={() => {
 							open = false;
 						}}
@@ -209,7 +209,7 @@
 
 					<a
 						href="/register"
-						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+						class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 						on:click={() => {
 							open = false;
 						}}
