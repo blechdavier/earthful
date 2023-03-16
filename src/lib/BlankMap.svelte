@@ -90,15 +90,17 @@
 	}
 </script>
 
-<div id="map" class="w-full h-full" />
-<label class="sr-only" for="minimap">Toggle Satellite View</label>
-<button
-	id="minimap"
-	class="w-16 aspect-square absolute bottom-4 left-4 rounded-lg overflow-hidden border-2 shadow-lg"
-	title="Toggle Satellite View"
-	class:bg-slate-900={!satelliteActive}
-	class:border-white={!satelliteActive}
-	class:bg-white={satelliteActive}
-	class:border-gray-500={satelliteActive}
-	on:click={toggleSatellite}
-/>
+<div class="w-full h-full relative">
+	<div id="map" class="w-full h-full -mb-16" />
+	<label class="sr-only" for="minimap">Toggle Satellite View</label>
+	<button
+		id="minimap"
+		class="w-16 h-16 rounded-lg overflow-hidden border-2 shadow-lg absolute left-4 bottom-4"
+		title="Toggle Satellite View"
+		class:bg-slate-900={!satelliteActive}
+		class:border-white={!satelliteActive}
+		class:bg-white={satelliteActive}
+		class:border-gray-500={satelliteActive}
+		on:click={toggleSatellite}
+	/>
+</div>
