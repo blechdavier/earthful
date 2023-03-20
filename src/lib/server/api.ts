@@ -18,7 +18,7 @@ type PageAndTimestamp = {
     data: ApiItem[]
 }
 
-type ApiItem = z.infer<typeof apiItem>;
+export type ApiItem = z.infer<typeof apiItem>;
 
 const apiItem = z.object({
     // list_name: z.string(),
