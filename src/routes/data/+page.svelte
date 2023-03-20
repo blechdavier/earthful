@@ -2,10 +2,11 @@
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import BlankMap from '$lib/BlankMap.svelte';
 	import Tray from '$lib/Tray.svelte';
+	import PieChart from '$lib/PieChart.svelte';
 
 	type AnalysisResponse = {
-		masterItemNames: Array<{ [key: string]: number }>;
-		masterItemMaterials: Array<{ [key: string]: number }>;
+		masterItemNames: Array<{ master_item_name: string; quantity: number }>;
+		masterMaterials: Array<{ master_material: string; quantity: number }>;
 		debrisQuantity: number;
 	};
 
@@ -25,8 +26,8 @@
 		return async ({ result }) => {
 			if (result.type === 'success') {
 				try {
-					data = result.data as AnalysisResponse; // shush typescript my API will probably work
-					console.log(result);
+					data = result.data as AnalysisResponse;
+					console.log(data);
 				} catch (err) {
 					console.error('The server sent malformed data.');
 				}
@@ -54,6 +55,16 @@
 					{data.debrisQuantity.toLocaleString()} Pieces of Debris Analyzed in
 					<span class="text-teal-600">{(requestElapsed / 1000).toFixed(2)}s</span>
 				</h2>
+				<div class="flex flex-col space-y-4">
+					<PieChart
+						labels={data.masterMaterials.map((material) => material.master_material)}
+						data={data.masterMaterials.map((material) => material.quantity)}
+					/>
+					<PieChart
+						labels={data.masterItemNames.map((item) => item.master_item_name)}
+						data={data.masterItemNames.map((item) => item.quantity)}
+					/>
+				</div>
 			{:else}
 				<h2 class="text-xl">Make sure to select the location and time frame you want.</h2>
 				<div

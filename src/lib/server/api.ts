@@ -181,9 +181,9 @@ export function getApiItems(lte: Date, gte: Date): ApiItem[] {
     let result: ApiItem[] = [];
     for (const page in pages) {
         for (const item of pages[page].data) {
-            // if (item.timestamp >= gteTimestamp && item.timestamp <= lteTimestamp) {
-            result.push(item);
-            // }
+            if (item.timestamp >= gteTimestamp && item.timestamp <= lteTimestamp) {
+                result.push(item);
+            }
         }
     }
     return result;
