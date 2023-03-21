@@ -43,7 +43,7 @@
 				center: [0, 0],
 				zoom: 2
 			}),
-			controls: defaultControls().extend([])
+			controls: []
 		});
 		minimap = new Map({
 			target: 'minimap',
@@ -91,15 +91,13 @@
 </script>
 
 <div class="w-full h-full relative">
-	<div id="map" class="w-full h-full -mb-16" />
+	<div id="map" class="w-full h-full -mb-16 bg-[#e1eff0]" class:bg-slate-900={satelliteActive} />
 	<label class="sr-only" for="minimap">Toggle Satellite View</label>
 	<button
 		id="minimap"
-		class="w-16 h-16 rounded-lg overflow-hidden border-2 shadow-lg absolute left-4 bottom-4"
+		class="w-16 h-16 rounded-lg overflow-hidden border-2 shadow-lg absolute left-4 bottom-4 bg-slate-900 border-white"
 		title="Toggle Satellite View"
-		class:bg-slate-900={!satelliteActive}
-		class:border-white={!satelliteActive}
-		class:bg-white={satelliteActive}
+		class:bg-[#e1eff0]={satelliteActive}
 		class:border-gray-500={satelliteActive}
 		on:click={toggleSatellite}
 	/>
