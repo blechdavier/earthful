@@ -58,6 +58,7 @@
 				plugins
 			};
 			options.plugins.legend = {
+				// @ts-ignore the type definition is wrong, this has the correct effect
 				display: false
 			};
 		}
@@ -80,4 +81,4 @@
 	});
 </script>
 
-<canvas class="h-64" {id} />
+<canvas {id} />

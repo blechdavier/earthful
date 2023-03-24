@@ -16,6 +16,9 @@
 	let requestElapsed: number;
 	let data: AnalysisResponse;
 
+	let shapeType = 'None';
+	let chartType: 'pie' | 'bar' = 'bar';
+
 	async function getDataAnalysis() {
 		requestStartTime = Date.now();
 		hasSubmitted = true;
@@ -47,45 +50,65 @@
 	</div>
 	<Tray expandMessage="Show Analysis Tools" collapseMessage="Hide Analysis Tools">
 		<div class="p-4 font-medium text-gray-500">
-			<div class="flex justify-between">
-				<h1 class="text-3xl mb-4 mt-1.5">Data Analysis</h1>
-			</div>
+			<h1 class="text-3xl mb-4 mt-1.5">Data Analysis</h1>
 			{#if data !== undefined}
 				<h2 class="text-xl pb-5">
 					{data.debrisQuantity.toLocaleString()} Pieces of Debris Analyzed in
 					<span class="text-teal-600">{(requestElapsed / 1000).toFixed(2)}s</span>
 				</h2>
-				<div class="flex flex-col space-y-4">
-					<Chart
-						title="Materials"
-						labels={data.masterMaterials.map((material) => material.master_material)}
-						data={data.masterMaterials.map((material) => material.quantity)}
-					/>
-					<Chart
-						title="Item Names"
-						labels={data.masterItemNames.map((item) => item.master_item_name)}
-						data={data.masterItemNames.map((item) => item.quantity)}
-					/>
+				<div class="flex justify-center flex-col xs:flex-row">
+					<button
+						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 m-2"
+						on:click={() => (chartType = chartType === 'bar' ? 'pie' : 'bar')}
+					>
+						{#if chartType === 'bar'}
+							View Pie Chart
+						{:else}
+							View Bar Chart
+						{/if}
+					</button>
+					<button
+						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 m-2"
+					>
+						Export Data
+					</button>
+					<button
+						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 m-2"
+					>
+						Save Chart Image
+					</button>
+				</div>
+				<div class="flex flex-col space-y-4 p-2">
+					{#if chartType === 'bar'}
+						<Chart
+							title="Materials"
+							labels={data.masterMaterials.map((material) => material.master_material)}
+							data={data.masterMaterials.map((material) => material.quantity)}
+							type="bar"
+						/>
+						<Chart
+							title="Item Names"
+							labels={data.masterItemNames.map((item) => item.master_item_name)}
+							data={data.masterItemNames.map((item) => item.quantity)}
+							type="bar"
+						/>
+					{:else}
+						<Chart
+							title="Materials"
+							labels={data.masterMaterials.map((material) => material.master_material)}
+							data={data.masterMaterials.map((material) => material.quantity)}
+							type="pie"
+						/>
+						<Chart
+							title="Item Names"
+							labels={data.masterItemNames.map((item) => item.master_item_name)}
+							data={data.masterItemNames.map((item) => item.quantity)}
+							type="pie"
+						/>
+					{/if}
 				</div>
 			{:else}
-				<h2 class="text-xl">Make sure to select the location and time frame you want.</h2>
-				<div
-					class="flex items-center bg-blue-500 text-white text-sm font-bold px-4 py-3 rounded-lg my-3"
-					role="alert"
-				>
-					<svg
-						class="fill-current w-4 h-4 mr-2"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 20 20"
-						><path
-							d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"
-						/></svg
-					>
-					<p>
-						All time zones in UTC {(new Date().getTimezoneOffset() / 60 < 0 ? ' + ' : ' - ') +
-							Math.abs(new Date().getTimezoneOffset() / 60)}
-					</p>
-				</div>
+				<h2 class="text-xl mb-4">Make sure to select the location and time frame you want.</h2>
 				<form method="POST" class="text-sm" use:enhance={submitDataQuery}>
 					<label for="gte">From</label>
 					<input
@@ -102,28 +125,49 @@
 						class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm my-2"
 					/>
 					<label for="locationPicker">Location Filter</label>
-					<select class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm my-2">
+					<select
+						class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm my-2"
+						bind:value={shapeType}
+					>
 						<option value="None">All Locations</option>
 						<option value="Circle">Circle</option>
 						<option value="Polygon">Custom Polygon</option>
 					</select>
-					<button
-						type="submit"
-						name="action"
-						value="analysis"
-						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-3"
-						on:click={getDataAnalysis}
-					>
-						{hasSubmitted ? 'Loading' : 'Analyze'}
-					</button>
-					<button
-						type="submit"
-						name="action"
-						value="export"
-						class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-3"
-					>
-						{hasSubmitted ? 'Loading' : 'Export Data'}
-					</button>
+					{#if shapeType !== 'None'}
+						<div class="flex rounded-full bg-blue-500 text-white p-1 animate-pulse shadow mt-1">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 mx-1"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+							>
+								<path
+									d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+								/>
+							</svg>
+							<p class="text-md mx-1">Click anywhere on the map to draw your shape.</p>
+						</div>
+					{/if}
+					<div class="flex justify-center items-center">
+						<button
+							type="submit"
+							name="action"
+							value="analysis"
+							class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-3"
+							on:click={getDataAnalysis}
+						>
+							{hasSubmitted ? 'Loading' : 'Analyze Data'}
+						</button>
+						<div class="w-1 h-3 rounded-full bg-gray-200 mx-1 mt-3" />
+						<button
+							type="submit"
+							name="action"
+							value="export"
+							class="block rounded-md bg-teal-600 px-5 py-2.5 font-medium text-white transition hover:bg-teal-700 mt-3"
+						>
+							Export Data
+						</button>
+					</div>
 				</form>
 			{/if}
 		</div>
