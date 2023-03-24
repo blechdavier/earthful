@@ -67,8 +67,8 @@
 			minimap.getView().setCenter(map.getView().getCenter());
 			const zoom = map.getView().getZoom() ?? 0;
 			const mapSize = map.getSize() ?? [256, 256];
-			console.log('zoom', zoom, 'mapSize', mapSize, 'log2', Math.log2(mapSize[1] / 64));
-			console.log('zoom', zoom - Math.log2(mapSize[1] / 64));
+			//console.log('zoom', zoom, 'mapSize', mapSize, 'log2', Math.log2(mapSize[1] / 64));
+			//console.log('zoom', zoom - Math.log2(mapSize[1] / 64));
 			minimap.getView().setZoom(zoom - Math.log2(mapSize[1] / 64));
 		});
 	});
@@ -90,7 +90,7 @@
 	}
 </script>
 
-<div class="w-full h-full relative">
+<div class="w-full h-full relative overflow-hidden">
 	<div id="map" class="w-full h-full -mb-16 bg-[#e1eff0]" class:bg-slate-900={satelliteActive} />
 	<label class="sr-only" for="minimap">Toggle Satellite View</label>
 	<button

@@ -2,7 +2,7 @@
 	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 	import BlankMap from '$lib/BlankMap.svelte';
 	import Tray from '$lib/Tray.svelte';
-	import PieChart from '$lib/PieChart.svelte';
+	import Chart from '$lib/Chart.svelte';
 
 	type AnalysisResponse = {
 		masterItemNames: Array<{ master_item_name: string; quantity: number }>;
@@ -27,14 +27,14 @@
 			if (result.type === 'success') {
 				try {
 					data = result.data as AnalysisResponse;
-					console.log(data);
+					//console.log(data);
 				} catch (err) {
 					console.error('The server sent malformed data.');
 				}
 
 				hasSubmitted = false;
 				requestElapsed = Date.now() - requestStartTime;
-				console.log(requestElapsed);
+				//console.log(requestElapsed);
 			}
 			applyAction(result);
 		};
@@ -56,11 +56,13 @@
 					<span class="text-teal-600">{(requestElapsed / 1000).toFixed(2)}s</span>
 				</h2>
 				<div class="flex flex-col space-y-4">
-					<PieChart
+					<Chart
+						title="Materials"
 						labels={data.masterMaterials.map((material) => material.master_material)}
 						data={data.masterMaterials.map((material) => material.quantity)}
 					/>
-					<PieChart
+					<Chart
+						title="Item Names"
 						labels={data.masterItemNames.map((item) => item.master_item_name)}
 						data={data.masterItemNames.map((item) => item.quantity)}
 					/>
