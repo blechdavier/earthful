@@ -6,8 +6,14 @@
 	import View from 'ol/View';
 	import TileLayer from 'ol/layer/Tile';
 	import XYZ from 'ol/source/XYZ';
-	import { defaults as defaultControls, Control } from 'ol/control';
-	import { defaults } from 'ol/interaction';
+	import VectorTileLayer from 'ol/layer/VectorTile';
+	import VectorTileSource from 'ol/source/VectorTile';
+	import GeoJSON from 'ol/format/GeoJSON';
+	import Style from 'ol/style/Style';
+	import CircleStyle from 'ol/style/Circle';
+	import Fill from 'ol/style/Fill';
+	import Stroke from 'ol/style/Stroke';
+	import Text from 'ol/style/Text';
 
 	const satellite_tile_url = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`;
 	const simple_tile_url = `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}`;
@@ -16,6 +22,46 @@
 
 	let map: Map;
 	let minimap: Map;
+
+	let pointSource = new VectorTileSource({
+		url: '/api/clusters/{z}/{x}/{y}',
+		format: new GeoJSON()
+	});
+
+	const styleCache: { [key: number]: Style } = {};
+
+	let pointLayer = new VectorTileLayer({
+		source: pointSource,
+		style: function (feature) {
+			// @ts-ignore
+			const size = feature.values_.quantity;
+			let style = styleCache[size];
+			if (!style) {
+				style = new Style({
+					image: new CircleStyle({
+						radius: Math.log10(size) * 3 + 10,
+						stroke: new Stroke({
+							color: '#3399CC',
+							width: 1.25
+						}),
+						fill: new Fill({
+							color: 'rgba(255, 255, 255, 0.6)'
+						})
+					}),
+					text: new Text({
+						text: size.toString(),
+						fill: new Fill({
+							color: '#084d70'
+						}),
+						font: 'bold 12px monospace'
+					})
+				});
+				styleCache[size] = style;
+			}
+			return style;
+		},
+		renderMode: 'hybrid'
+	});
 
 	// TODO fix the minimap lmao
 
@@ -37,7 +83,8 @@
 						// TODO IMPORTANT https://carto.com/grants/#form
 						url: (satelliteActive ? satellite_tile_url : simple_tile_url) + zoomString + '.png'
 					})
-				})
+				}),
+				pointLayer
 			],
 			view: new View({
 				center: [0, 0],

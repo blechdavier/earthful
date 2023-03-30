@@ -2,13 +2,13 @@
 	export let data;
 </script>
 
-<div class="flex flex-col justify-center items-center min-h-[calc(100dvh-80px)] space-y-6 m-2">
+<div class="flex flex-col justify-center items-center min-h-belownavbar space-y-6">
 	<h1 class="text-5xl font-bold">Leaderboard 🎖</h1>
 	<div class="flex flex-col sm:flex-row items-center justify-center">
 		<div
 			class="rounded-lg shadow-xl border border-gray-300 w-80 flex flex-col items-center m-2 p-6"
 		>
-			<h1 class="text-2xl font-bold mb-6">Top Trackers</h1>
+			<h1 class="text-2xl font-bold mb-6">Top Users</h1>
 			<div class="flex flex-col w-full rounded overflow-hidden shadow">
 				<p
 					class="group flex items-center justify-between px-4 py-2 text-gray-500 text-sm font-medium bg-gray-100 border-b-2"
@@ -42,6 +42,12 @@
 					</span>
 				</p>
 			</div>
+			<a
+				href="/leaderboard/trackers"
+				class="mt-4 -mb-2 text-sm text-white font-semibold rounded-lg bg-teal-600 hover:bg-teal-700 py-2 px-4"
+			>
+				See All
+			</a>
 		</div>
 		<div class="rounded-lg shadow-xl border border-gray-300 flex flex-col items-center m-2 p-6">
 			<h2 class="text-2xl font-bold mb-6">Top Projects</h2>
@@ -78,6 +84,12 @@
 					</span>
 				</p>
 			</div>
+			<a
+				href="/leaderboard/projects"
+				class="mt-4 -mb-2 text-sm text-white font-semibold rounded-lg bg-teal-600 hover:bg-teal-700 py-2 px-4"
+			>
+				See All
+			</a>
 		</div>
 	</div>
 </div>

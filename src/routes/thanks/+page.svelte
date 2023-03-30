@@ -1,4 +1,4 @@
-<div class="min-h-[calc(100dvh-64px)] flex flex-col justify-between">
+<div class="min-h-belownavbar flex flex-col justify-between">
 	<div class="font-medium text-sm p-4 space-y-2">
 		<h1 class="text-4xl pb-2">Awesome Resources: 🌱</h1>
 		<h2 class="text-xl">Frontend Tech</h2>

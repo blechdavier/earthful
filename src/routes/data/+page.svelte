@@ -44,7 +44,7 @@
 	};
 </script>
 
-<div class="flex flex-col sm:flex-row h-[calc(100dvh-64px)]">
+<div class="flex flex-col sm:flex-row h-belownavbar">
 	<div class="flex-grow">
 		<BlankMap />
 	</div>

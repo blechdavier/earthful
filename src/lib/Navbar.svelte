@@ -125,7 +125,7 @@
 						</a>
 
 						<a
-							class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+							class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-700 sm:block"
 							href="/register"
 							on:click={() => {
 								open = false;
