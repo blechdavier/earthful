@@ -3,6 +3,18 @@ module.exports = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      height: {
+        'belownavbar': ['calc(100vh - 4rem)', 'calc(100dvh - 4rem)']
+      },
+      minHeight: {
+        'belownavbar': ['calc(100vh - 4rem)', 'calc(100dvh - 4rem)']
+      },
+      maxHeight: {
+        'belownavbar': ['calc(100vh - 4rem)', 'calc(100dvh - 4rem)']
+      },
+      width: {
+        'cover-x': ['100vw', '100lvw']
+      },
       screens:{
         '2xs': '320px',
         'xs': '480px',
