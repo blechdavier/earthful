@@ -2,6 +2,8 @@ import { getApiItems } from "./api";
 import rbush from "rbush";
 import type RBush from "rbush";
 
+let apiItems = getApiItems(new Date(), new Date(0));
+
 interface RBushItem {
     minX: number;
     minY: number;
@@ -17,29 +19,19 @@ let cache: RBush<RBushItem>[] = [];
 
 cache[0] = new rbush(9);
 
-await getApiItems(new Date(), new Date(0)).then((apiItems) => {
+cache[0].load(apiItems.map((item) => {
+    return {
+        minX: item.longitude,
+        minY: item.latitude,
+        maxX: item.longitude,
+        maxY: item.latitude,
+        quantity: item.quantity,
+        clustered: false,
+    };
+}));
 
-    cache[0].load(apiItems.map((item) => {
-        return {
-            minX: item.longitude,
-            minY: item.latitude,
-            maxX: item.longitude,
-            maxY: item.latitude,
-            quantity: item.quantity,
-            clustered: false,
-        };
-    }));
+console.log(`rbush took ${Date.now() - startTime}ms to index ${apiItems.length} items`);
 
-    console.log(`rbush took ${Date.now() - startTime}ms to index ${apiItems.length} items`);
-
-    let clusterRadius = 0.001;
-
-    for (let i = 1; i < 16; i++) {
-        cache[i] = cluster(cache[i - 1], clusterRadius);
-        clusterRadius *= 2.1; // slightly simplify the clustering as we zoom out
-    }
-
-});
 
 /*
 
@@ -106,12 +98,19 @@ function cluster(input: RBush<RBushItem>, clusterRadius: number): RBush<RBushIte
     return output as RBush<RBushItem>;
 }
 
+let clusterRadius = 0.001;
+
+for (let i = 1; i < 16; i++) {
+    cache[i] = cluster(cache[i - 1], clusterRadius);
+    clusterRadius *= 2.1; // slightly simplify the clustering as we zoom out
+}
+
 function getRBush(z: number) {
     return cache[cache.length - z - 1];
 }
 
 
-export async function getTileData(x: number, y: number, z: number) {
+export function getTileData(x: number, y: number, z: number) {
 
     //as a test, sum up the quantities in the most zoomed out layer and print it out
     let total = getRBush(0).all().reduce((acc, item) => acc + item.quantity, 0);
