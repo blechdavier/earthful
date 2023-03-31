@@ -172,8 +172,25 @@ export async function startApiPageInterval() {
     }, 1000 * 60 * 5);
 }
 
-export function getApiItems(lte: Date, gte: Date): ApiItem[] {
-    console.log(`getting items between ${gte} and ${lte}`)
+function distSquared(x1: number, y1: number, x2: number, y2: number) {
+    return (x1 - x2) ** 2 + (y1 - y2) ** 2;
+}
+
+function inside(point: [number, number], polygon: number[]) {
+    let x = point[0], y = point[1];
+    let inside = false;
+    for (let i = 0, j = polygon.length - 2; i < polygon.length; j = i, i += 2) {
+        let xi = polygon[i], yi = polygon[i + 1];
+        let xj = polygon[j], yj = polygon[j + 1];
+        let intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}
+
+export function getApiItems(lte: Date, gte: Date, shapeType: "None" | "Circle" | "Polygon" = "None", shape: number[] = []): ApiItem[] {
+    console.log(`getting items between ${gte} and ${lte} with shape ${shapeType} and shape ${shape}`)
     console.log(`there are ${Object.keys(pages).length} pages`)
     const gteTimestamp = gte.getTime();
     const lteTimestamp = lte.getTime();
@@ -182,6 +199,15 @@ export function getApiItems(lte: Date, gte: Date): ApiItem[] {
     for (const page in pages) {
         for (const item of pages[page].data) {
             if (item.timestamp >= gteTimestamp && item.timestamp <= lteTimestamp) {
+                if (shapeType === "Circle") {
+                    if (distSquared(item.longitude, item.latitude, shape[0], shape[1]) > shape[2] ** 2) {
+                        continue;
+                    }
+                } else if (shapeType === "Polygon") {
+                    if (!inside([item.longitude, item.latitude], shape)) {
+                        continue;
+                    }
+                }
                 result.push(item);
             }
         }

@@ -1,7 +1,7 @@
 import type { Actions } from '@sveltejs/kit'
 import { getApiItems, type ApiItem } from '$lib/server/api'
 
-function compareByQuantity(a, b) {
+function compareByQuantity(a: { quantity: number; }, b: { quantity: number; }) {
     if (a.quantity > b.quantity) {
         return -1;
     }
@@ -14,14 +14,18 @@ function compareByQuantity(a, b) {
 export const actions: Actions = {
     default: async ({ request }) => {
         const formData = await request.formData();
+
         const analysis = formData.get('action') === 'analysis';
+
+        const shapeType = formData.get('shapeType') as "None" | "Circle" | "Polygon";
+        const shape = formData.get('shape') === '' ? [] : JSON.parse("[" + formData.get('shape') + "]");
 
         const lte = formData.get('lte') === '' ? new Date() : new Date(formData.get('lte'));
         const gte = formData.get('gte') === '' ? new Date(0) : new Date(formData.get('gte'));
 
 
         if (analysis) {
-            let apiItems = getApiItems(lte, gte);
+            let apiItems = getApiItems(lte, gte, shapeType, shape);
 
             // these two properties are the ones that actually matter
             let masterMaterials: { [key: string]: number } = {}
@@ -65,14 +69,6 @@ export const actions: Actions = {
                 ).sort(compareByQuantity),
                 debrisQuantity
             }
-            return response;
-        } else {
-            let response: ApiItem[] = [];
-            for (const page in pages) {
-                console.log(`${pages[page].data.length} results on page ${page}`)
-                response = response.concat(pages[page].data)
-            }
-            console.log(`returning ${response.length} results`)
             return response;
         }
     }

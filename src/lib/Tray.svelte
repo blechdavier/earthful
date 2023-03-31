@@ -36,11 +36,9 @@
 			<p class="ml-1 sm:hidden">{expandMessage}</p>
 		{/if}
 	</button>
-	{#if open}
-		<div class="w-full">
-			<div class="overflow-auto max-h-full">
-				<slot />
-			</div>
+	<div class="w-full" class:hidden={!open}>
+		<div class="overflow-auto max-h-full">
+			<slot />
 		</div>
-	{/if}
+	</div>
 </div>

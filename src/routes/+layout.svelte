@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Navbar from '$lib/Navbar.svelte';
 	import '../app.css';
-	import type { PageData } from './users/$types'; // FIXME why is this only importable from here?
+	import type { PageData } from './$types';
 	export let data: PageData;
 </script>
 
