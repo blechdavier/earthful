@@ -147,7 +147,6 @@ export async function startApiPageInterval() {
     console.log("Scraping API pages to fill cache");
 
     // Fetch pages until we have all of them
-    // this is only one pass and errors are ignored, so it's not perfect
     let page = 1;
     while (total_pages === undefined || Object.keys(pages).length < total_pages) {
         if (!pages.hasOwnProperty(page)) {
@@ -155,24 +154,38 @@ export async function startApiPageInterval() {
         }
         page++;
     }
-    console.log("Cache full, starting interval");
+    console.log("Cache full, filling in gaps");
+    // Fill in any gaps in the cache
+    while (Object.keys(pages).length < total_pages) {
+        let page = 1;
+        while (pages.hasOwnProperty(page)) {
+            page++;
+        }
+        await fetchApiPage(page);
+    }
 
     // Then, every 5 minutes, fetch the oldest page
-    setInterval(async () => {
-        let oldestPage = 1;
-        let oldestTimestamp = Date.now();
-        for (const page in pages) {
-            if (pages[page].timestamp < oldestTimestamp) {
-                oldestPage = Number(page);
-                oldestTimestamp = pages[page].timestamp;
-            }
-        }
-        console.log(`Oldest page was ${oldestPage}, freshening it up (total pages: ${total_pages})`)
-        await fetchApiPage(oldestPage);
-    }, 1000 * 60 * 5);
+    // setInterval(async () => {
+    //     let oldestPage = 1;
+    //     let oldestTimestamp = Date.now();
+    //     for (const page in pages) {
+    //         if (pages[page].timestamp < oldestTimestamp) {
+    //             oldestPage = Number(page);
+    //             oldestTimestamp = pages[page].timestamp;
+    //         }
+    //     }
+    //     console.log(`Oldest page was ${oldestPage}, freshening it up (total pages: ${total_pages})`)
+    //     await fetchApiPage(oldestPage);
+    // }, 1000 * 60 * 5);
 }
 
-export function getApiItems(lte: Date, gte: Date): ApiItem[] {
+export async function getApiItems(lte: Date, gte: Date): Promise<ApiItem[]> {
+    console.log("getting items")
+    if (total_pages === undefined) {
+        console.log("pages is undefined, waiting for startApiPageInterval to finish");
+        await startApiPageInterval();
+        console.log("startApiPageInterval finished, now we can go about our business")
+    }
     console.log(`getting items between ${gte} and ${lte}`)
     console.log(`there are ${Object.keys(pages).length} pages`)
     const gteTimestamp = gte.getTime();

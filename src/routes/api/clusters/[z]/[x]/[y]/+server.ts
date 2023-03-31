@@ -9,6 +9,6 @@ export const GET: RequestHandler<{ x: string, y: string, z: string }> = async ({
     const z = parseInt(params.z);
 
     // find the cluster that contains the point
-    return new Response(JSON.stringify(getTileData(x, y, z)));
+    return new Response(JSON.stringify(await getTileData(x, y, z)));
 
 }

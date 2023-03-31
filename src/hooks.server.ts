@@ -6,4 +6,4 @@ import type { Handle } from "@sveltejs/kit";
 export const handle: Handle = handleHooks(auth) // make sure the lucia is first.
 
 // start fetching API pages every so often. This is to keep a cache of the API data
-startApiPageInterval()
+await startApiPageInterval()
