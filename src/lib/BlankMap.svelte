@@ -14,6 +14,14 @@
 	import Fill from 'ol/style/Fill';
 	import Stroke from 'ol/style/Stroke';
 	import Text from 'ol/style/Text';
+	import VectorSource from 'ol/source/Vector';
+	import VectorLayer from 'ol/layer/Vector';
+	import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
+	import Polygon from 'ol/geom/Polygon';
+	import type { Type } from 'ol/geom/Geometry';
+	import type Interaction from 'ol/interaction/Interaction';
+	import { toLonLat } from 'ol/proj';
+	import { Circle } from 'ol/geom';
 
 	const satellite_tile_url = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`;
 	const simple_tile_url = `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}`;
@@ -63,9 +71,40 @@
 		renderMode: 'hybrid'
 	});
 
-	// TODO fix the minimap lmao
+	const drawSource = new VectorSource({ wrapX: false });
+
+	const drawLayer = new VectorLayer({
+		source: drawSource
+	});
+
+	let typeSelect: HTMLSelectElement;
+
+	export let drawnGeometry: Polygon | Circle | undefined = undefined;
+
+	let draw: Interaction; // global so we can remove it later
+	function addInteraction() {
+		const value = typeSelect.value;
+		if (value !== 'None') {
+			draw = new Draw({
+				source: drawSource,
+				type: value as Type
+			});
+			//@ts-ignore
+			draw.on('drawend', (e) => {
+				// @ts-ignore
+				const geom = e.feature.getGeometry();
+				if (geom instanceof Polygon || geom instanceof Circle) {
+					drawnGeometry = geom;
+				} else {
+					console.error('drawn geometry is not a polygon or circle');
+				}
+			});
+			map.addInteraction(draw);
+		}
+	}
 
 	onMount(() => {
+		typeSelect = document.getElementById('type') as HTMLSelectElement;
 		let zoom = window.devicePixelRatio;
 		// the api allows adding a zoom level to the URL to get an image with a higher pixel scaling
 		// for example, basemaps.cartocdn.com/.../z/x/y@2x.png would return the same image as /z/x/y.png
@@ -84,7 +123,8 @@
 						url: (satelliteActive ? satellite_tile_url : simple_tile_url) + zoomString + '.png'
 					})
 				}),
-				pointLayer
+				pointLayer,
+				drawLayer
 			],
 			view: new View({
 				center: [0, 0],
@@ -92,6 +132,14 @@
 			}),
 			controls: []
 		});
+		// add the interaction for drawing the shape
+		addInteraction();
+		// add a listener to print when the shape is drawn
+		typeSelect.onchange = function () {
+			console.log('changed');
+			map.removeInteraction(draw);
+			addInteraction();
+		};
 		minimap = new Map({
 			target: 'minimap',
 			layers: [

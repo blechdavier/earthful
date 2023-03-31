@@ -3,6 +3,7 @@
 	import BlankMap from '$lib/BlankMap.svelte';
 	import Tray from '$lib/Tray.svelte';
 	import Chart from '$lib/Chart.svelte';
+	import type { Polygon, Circle } from 'ol/geom';
 
 	type AnalysisResponse = {
 		masterItemNames: Array<{ master_item_name: string; quantity: number }>;
@@ -18,6 +19,8 @@
 
 	let shapeType = 'None';
 	let chartType: 'pie' | 'bar' = 'bar';
+
+	let drawnGeometry: Polygon | Circle | undefined = undefined;
 
 	async function getDataAnalysis() {
 		requestStartTime = Date.now();
@@ -42,11 +45,17 @@
 			applyAction(result);
 		};
 	};
+
+	// every 5 seconds, print the geometry to the console
+	// TODO remove this
+	setInterval(() => {
+		console.log(drawnGeometry);
+	}, 1000);
 </script>
 
 <div class="flex flex-col sm:flex-row h-belownavbar">
 	<div class="flex-grow">
-		<BlankMap />
+		<BlankMap {drawnGeometry} />
 	</div>
 	<Tray expandMessage="Show Analysis Tools" collapseMessage="Hide Analysis Tools">
 		<div class="p-4 font-medium text-gray-500">
@@ -127,7 +136,7 @@
 					<label for="locationPicker">Location Filter</label>
 					<select
 						class="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm my-2"
-						bind:value={shapeType}
+						id="type"
 					>
 						<option value="None">All Locations</option>
 						<option value="Circle">Circle</option>
